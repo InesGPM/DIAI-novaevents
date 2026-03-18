@@ -90,6 +90,7 @@ class EventController(val eventService: EventService, val clubService: ClubServi
                     @Valid @ModelAttribute("form") form: EventFormDto, bindingResult: BindingResult, model: Model): String {
         if (bindingResult.hasErrors()) {
             model.addAttribute("club", clubService.getById(clubId))
+            model.addAttribute("event", eventService.getById(id))
             return "events/edit"
         }
         try {
@@ -105,6 +106,7 @@ class EventController(val eventService: EventService, val clubService: ClubServi
         } catch (e: IllegalArgumentException) {
             bindingResult.rejectValue("name", "duplicate", e.message ?: "An event with this name already exists")
             model.addAttribute("club", clubService.getById(clubId))
+            model.addAttribute("event", eventService.getById(id))
             return "events/edit"
         }
     }
